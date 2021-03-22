@@ -22,10 +22,10 @@ const DUMMY_NIGHT = [
 ]
 
 const getNightById = ( req,res,next) => {
-    const nightID= req.params.nid;
+    const nightId= req.params.nid;
 
     const night = DUMMY_NIGHT.find(n=> {
-        return n.id === nightID
+        return n.id === nightId
     })
 
     if (!night) {
@@ -81,7 +81,51 @@ const getNightByDateId =  (req,res,next)=>{
     res.json({night})
 }
 
+const createNight = (req,res,next) => {
+    const {friends ,barName, barArrival, barDeparture, barDate, creator} = req.body
+    const createdNight = {
+        friends,
+        barName,
+        barArrival,
+        barDeparture,
+        barDate,
+        creator
+    }
+
+    DUMMY_NIGHT.push(createdNight)
+
+    res.status(201).json({night : createdNight})
+}
+
+
+
+const updateNight = (req,res,next) => {
+    const {friends, barName, barArrival, barDeparture} = req.body
+    const nightId = req.params.nid
+
+    const updatedNight = {...DUMMY_NIGHT.find(n=> n.id === nightId)}
+    const nightIndex = DUMMY_NIGHT.findIndex(n => n.id === nightId)
+
+    updatedNight.friends = friends
+    updatedNight.barName = barName
+    updatedNight.barArrival = barArrival
+    updatedNight.barDeparture = barDeparture
+
+    DUMMY_NIGHT[nightIndex] = updatedNight
+
+    res.status(200).json({night: updatedNight})
+
+}
+
+const deleteNight = (req,res,next) => {
+
+}
+
 exports.getNightById = getNightById
 exports.getNightByUserId = getNightByUserId
 exports.getNightByBarId = getNightByBarId
 exports.getNightByDateId = getNightByDateId
+exports.createNight = createNight
+
+exports.updateNight = updateNight
+exports.deleteNight = deleteNight

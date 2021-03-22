@@ -14,6 +14,12 @@ router.get('/Bar/:bid', barController.getBarByNameId)
 // route pour trouver un bar par capacité
 router.get('/Capacity/:bid', barController.getBarByCapacityId)
 
+// créer un bar
+
+router.post('/', barController.createBar)
+
+router.patch('/:bid', barController.updateBar)
+
 
 
 module.exports = router

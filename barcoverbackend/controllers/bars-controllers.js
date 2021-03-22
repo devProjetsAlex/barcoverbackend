@@ -6,16 +6,18 @@ const BARS = [
     name:'Sacrilege',
     email: 'Sacrilege@gmail.com',
     phone: 7789199626,
+    image:"niccage",
     capacity: 50,
-    creator: "u1"
+    creator: "admin"
    },
    {
     id: 'b2',
     name:'Nelligan',
     email: 'Nelligan@gmail.com',
     phone: 7789199626,
+    image:"niccage",
     capacity: '50',
-    creator: "u1"
+    creator: "admin"
    }
 ];
 
@@ -62,8 +64,43 @@ const getBarByCapacityId = (req,res,next)=>{
     res.json({bar}
     )
 }   
+const createBar = (req,res,next) => {
+    const {name,email,phone,image,capacity,creator} = req.body
+    const createdBar = {
+        name,
+        email,
+        phone,
+        image,
+        capacity,
+        creator
 
+    }
 
+    BARS.push(createdBar)
+    res.status(201).json({bar : createdBar})
+}
+
+const updateBar = (req,res,next) => {
+    const {name, email, phone, image, capacity} = req.body
+    const barId = req.params.bid
+
+    const updatedBar = {...BARS.find(b => b.id = barId)}
+    const barIndex = BARS.findIndex(b => b.id === barId)
+
+    updatedBar.name = name
+    updatedBar.email= email
+    updatedBar.phone = phone
+    updatedBar.image = image
+    updatedBar.capacity = capacity
+
+    BARS[barIndex] = updatedBar
+
+    res.status(200).json({bar: updatedBar})
+
+}
+
+exports.createBar = createBar
 exports.getBarByCapacityId = getBarByCapacityId
 exports.getBarById = getBarById
 exports.getBarByNameId = getBarByNameId
+exports.updateBar = updateBar

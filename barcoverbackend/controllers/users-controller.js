@@ -39,6 +39,23 @@ const getUserByNightId = (req,res,next) => {
     res.json({user})
 }
 
+const createUser = (req,res,next) => {
+    const {id,name ,email, phone, bars } = req.body
+    const createdUser = {
+        id,
+        name,
+        email,
+        phone,
+        bars       
+    }
 
+    USERS.push(createdUser)
+
+    res.status(201).json({user : createdUser})
+}
+
+
+
+exports.createUser = createUser
 exports.getUserById = getUserById
 exports.getUserByNightId = getUserByNightId

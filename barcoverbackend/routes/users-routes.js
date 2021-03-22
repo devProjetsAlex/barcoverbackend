@@ -10,4 +10,6 @@ router.get('/:uid', userController.getUserById)
 
 router.get('/Nights/:nid', userController.getUserByNightId)
 
+router.post('/', userController.createUser)
+
 module.exports = router
