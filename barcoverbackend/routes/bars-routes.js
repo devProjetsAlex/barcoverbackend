@@ -1,9 +1,6 @@
 const express = require('express');
-const barController = require('../controllers/bars-controllers');
-
 const router = express.Router()
-const HttpError = require('../models/http-errors')
-
+const barController = require('../controllers/bars-controllers');
 // route pour trouvée un bar par ID
 router.get('/:bid', barController.getBarById)
 
@@ -20,6 +17,7 @@ router.post('/', barController.createBar)
 
 router.patch('/:bid', barController.updateBar)
 
+router.delete('/:bid', barController.deleteBar)
 
 
 module.exports = router

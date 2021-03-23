@@ -1,6 +1,6 @@
 const HttpError = require('../models/http-errors')
 
-const BARS = [
+let BARS = [
     {
     id: 'b1',
     name:'Sacrilege',
@@ -99,8 +99,15 @@ const updateBar = (req,res,next) => {
 
 }
 
+const deleteBar = (req,res,next) => {
+    const barId = req.params.bid;
+    BARS =BARS.filter(b => b.id !== barId)
+    res.status(200).json({message: 'Bar effacé.'})
+}
+
 exports.createBar = createBar
 exports.getBarByCapacityId = getBarByCapacityId
 exports.getBarById = getBarById
 exports.getBarByNameId = getBarByNameId
 exports.updateBar = updateBar
+exports.deleteBar = deleteBar

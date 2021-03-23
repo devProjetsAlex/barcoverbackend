@@ -1,6 +1,6 @@
 const HttpError = require('../models/http-errors')
 
-const DUMMY_NIGHT = [
+let DUMMY_NIGHT = [
     {
         id:'p1',
         friends:'George et Phil',
@@ -13,7 +13,7 @@ const DUMMY_NIGHT = [
     {
         id:'p2',
         friends:'George et Phil',
-        barName:'Nelligan',
+        barName:'Sacrilege',
         barArrival: "21:00",
         barDeparture: "23:00",
         barDate: "2021-03-13",
@@ -21,7 +21,7 @@ const DUMMY_NIGHT = [
     }
 ]
 
-const getNightById = ( req,res,next) => {
+const getNightsById = ( req,res,next) => {
     const nightId= req.params.nid;
 
     const night = DUMMY_NIGHT.find(n=> {
@@ -35,10 +35,10 @@ const getNightById = ( req,res,next) => {
     res.json({night})
 }
 
-const getNightByUserId = (req,res,next)=>{
+const getNightsByCreator = (req,res,next)=>{
     const userId = req.params.uid;
 
-    const night = DUMMY_NIGHT.find(n=>{
+    const night = DUMMY_NIGHT.filter(n=>{
         return n.creator === userId
     });
 
@@ -51,10 +51,10 @@ const getNightByUserId = (req,res,next)=>{
     res.json({night})
 }
 
-const getNightByBarId =  (req,res,next)=> {
+const getNightsByBarName =  (req,res,next)=> {
     const barId = req.params.bid;
 
-    const night = DUMMY_NIGHT.find(n=>{
+    const night = DUMMY_NIGHT.filter(n=>{
         return n.barName === barId
     })
     if (!night) {
@@ -66,14 +66,14 @@ const getNightByBarId =  (req,res,next)=> {
     res.json({night})
 }
 
-const getNightByDateId =  (req,res,next)=>{
+const getNightsByDate =  (req,res,next)=>{
     const dateId = req.params.did;
 
 
-    const night = DUMMY_NIGHT.find(d=>{
+    const nights = DUMMY_NIGHT.filter(d=>{
         return d.barDate === dateId
     })
-    if (!night) {
+    if (!nights || nights.length === 0 ) {
         return next(
         new HttpError("Cette date n'est pas enregistré dans vos soirées.", 404)
         )
@@ -118,13 +118,15 @@ const updateNight = (req,res,next) => {
 }
 
 const deleteNight = (req,res,next) => {
-
+    const nightId = req.params.nid;
+    DUMMY_NIGHT = DUMMY_NIGHT.filter(n => n.id !== nightId)
+    res.status(200).json({message: 'Soirée effacée.'})
 }
 
-exports.getNightById = getNightById
-exports.getNightByUserId = getNightByUserId
-exports.getNightByBarId = getNightByBarId
-exports.getNightByDateId = getNightByDateId
+exports.getNightsById = getNightsById
+exports.getNightsByCreator = getNightsByCreator
+exports.getNightsByBarName = getNightsByBarName
+exports.getNightsByDate = getNightsByDate
 exports.createNight = createNight
 
 exports.updateNight = updateNight
