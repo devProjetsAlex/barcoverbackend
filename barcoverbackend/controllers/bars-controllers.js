@@ -1,4 +1,6 @@
+const { v4: uuidv4 } = require('uuid');
 const HttpError = require('../models/http-errors')
+const { validationResult} = require('express-validator')
 
 let BARS = [
     {
@@ -7,7 +9,7 @@ let BARS = [
     email: 'Sacrilege@gmail.com',
     phone: 7789199626,
     image:"niccage",
-    capacity: '50',
+    capacity: 50,
     creator: "admin"
    },
    {
@@ -16,7 +18,7 @@ let BARS = [
     email: 'Nelligan@gmail.com',
     phone: 7789199626,
     image:"niccage",
-    capacity: '30',
+    capacity: 0,
     creator: "admin"
    }
 ];
@@ -50,6 +52,7 @@ const getBarByName =  (req,res,next) =>{
     res.json({bar})
 }
 
+
 const getBarByCapacity = (req,res,next)=>{
     const barCapacity = req.params.bid   
 
@@ -66,8 +69,15 @@ const getBarByCapacity = (req,res,next)=>{
     )
 }   
 const createBar = (req,res,next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        throw new HttpError('Invalid inputs passed, please check the data',422)
+    }
+
     const {name,email,phone,image,capacity,creator} = req.body
     const createdBar = {
+        id: uuidv4(),
         name,
         email,
         phone,
@@ -106,9 +116,22 @@ const deleteBar = (req,res,next) => {
     res.status(200).json({message: 'Bar effacé.'})
 }
 
+const getCapacity = (req,res,next) => {
+      
+    res.json({bars: BARS})
+ 
+   
+    
+}
+
+exports.getCapacity = getCapacity
+
 exports.createBar = createBar
 exports.getBarByCapacity = getBarByCapacity
 exports.getBarById = getBarById
 exports.getBarByName = getBarByName
 exports.updateBar = updateBar
 exports.deleteBar = deleteBar
+
+
+

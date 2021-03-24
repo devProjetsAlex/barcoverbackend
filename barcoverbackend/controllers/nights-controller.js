@@ -1,5 +1,7 @@
-const HttpError = require('../models/http-errors')
+const { v4: uuidv4 } = require('uuid');
+const { validationResult} = require('express-validator')
 
+const HttpError = require('../models/http-errors')
 let DUMMY_NIGHT = [
     {
         id:'p1',
@@ -82,8 +84,15 @@ const getNightsByDate =  (req,res,next)=>{
 }
 
 const createNight = (req,res,next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        throw new HttpError('Invalid inputs passed, please check the data',422)
+    }
+    
     const {friends ,barName, barArrival, barDeparture, barDate, creator} = req.body
     const createdNight = {
+        id: uuidv4(),
         friends,
         barName,
         barArrival,

@@ -1,4 +1,5 @@
 const express = require('express')
+const {check} = require('express-validator')
 const router = express.Router()
 const nightsControllers = require('../controllers/nights-controller')
 
@@ -11,7 +12,11 @@ router.get('/Bar/:bid',nightsControllers.getNightsByBarName)
 // route pour trouvé une soirée par date
 router.get('/Date/:did',nightsControllers.getNightsByDate)
 // route pour créer une soirée
-router.post('/', nightsControllers.createNight)
+router.post('/',
+[check('barName').not().isEmpty(),
+check('barArrival').not().isEmpty(),
+check('barDeparture').not().isEmpty()    
+], nightsControllers.createNight)
 // route pour modifié soiré
 router.patch('/:nid', nightsControllers.updateNight)
 
