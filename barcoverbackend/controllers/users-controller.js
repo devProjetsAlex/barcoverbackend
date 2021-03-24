@@ -1,11 +1,13 @@
+const { v4: uuidv4 } = require('uuid');
 const HttpError = require('../models/http-errors')
+
 const USERS = [
     {
     id: 'u1',
     name:'Alex Cote',
     email: 'alex@gmail.com',
     phone:'418-686-1139',
-    nights: '3'
+    password: '3'
    }
 ];
 
@@ -40,13 +42,12 @@ const getUserByNightId = (req,res,next) => {
 }
 
 const createUser = (req,res,next) => {
-    const {id,name ,email, phone, bars } = req.body
+    const {name ,email, phone } = req.body
     const createdUser = {
-        id,
+        id:uuidv4(),
         name,
         email,
-        phone,
-        bars       
+        phone       
     }
 
     USERS.push(createdUser)
@@ -56,6 +57,45 @@ const createUser = (req,res,next) => {
 
 
 
+const getUsers = (req,res,next) => {
+    res.json({users: USERS})
+}
+
+const signup = (req,res,next) => {
+    const { name, email, phone, password} = req.body
+    const hasUser = USERS.find(u => u.email === email );
+    if (hasUser) {
+        throw new HttpError('Email already register',422)
+    }
+
+
+    const createdUser = {
+        id: uuidv4(),
+        name,
+        email,
+        password,
+        phone
+    }
+
+    USERS.push(createdUser)
+
+    res.status(201).json({user: createdUser})
+}
+
+const login = (req,res,next) => {
+    const {email, password} = req.body;
+
+    const identifiedUser = USERS.find(u => u.email === email);
+    if (!identifiedUser || identifiedUser.password !== password) {
+        throw new HttpError('Could not identifu user, crendentials seem to be wrong.',401)
+
+    }
+    res.json({message: 'Logged In!'})
+}
+
+exports.login = login
+exports.signup = signup
+exports.getUsers = getUsers
 exports.createUser = createUser
 exports.getUserById = getUserById
 exports.getUserByNightId = getUserByNightId

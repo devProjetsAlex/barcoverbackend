@@ -7,7 +7,7 @@ let BARS = [
     email: 'Sacrilege@gmail.com',
     phone: 7789199626,
     image:"niccage",
-    capacity: 50,
+    capacity: '50',
     creator: "admin"
    },
    {
@@ -16,7 +16,7 @@ let BARS = [
     email: 'Nelligan@gmail.com',
     phone: 7789199626,
     image:"niccage",
-    capacity: '50',
+    capacity: '30',
     creator: "admin"
    }
 ];
@@ -35,7 +35,7 @@ const getBarById = ( req,res,next) => {
     res.json({bar})
 }
 
-const getBarByNameId =  (req,res,next) =>{
+const getBarByName =  (req,res,next) =>{
     const barName = req.params.bid
 
     const bar = BARS.find(b=> {
@@ -50,10 +50,11 @@ const getBarByNameId =  (req,res,next) =>{
     res.json({bar})
 }
 
-const getBarByCapacityId = (req,res,next)=>{
-    const barCapacity = req.params.bid
-    const bar = BARS.find(b=>{
-        return b.capacity === barCapacity
+const getBarByCapacity = (req,res,next)=>{
+    const barCapacity = req.params.bid   
+
+    const bar = BARS.filter(b=>{            
+        return (b.capacity === barCapacity)
     })
 
      if (!bar) {
@@ -106,8 +107,8 @@ const deleteBar = (req,res,next) => {
 }
 
 exports.createBar = createBar
-exports.getBarByCapacityId = getBarByCapacityId
+exports.getBarByCapacity = getBarByCapacity
 exports.getBarById = getBarById
-exports.getBarByNameId = getBarByNameId
+exports.getBarByName = getBarByName
 exports.updateBar = updateBar
 exports.deleteBar = deleteBar

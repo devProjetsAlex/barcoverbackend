@@ -6,10 +6,12 @@ router.get('/:bid', barController.getBarById)
 
 // route pour trouvée un bar par NOM 
 
-router.get('/Bar/:bid', barController.getBarByNameId)
+router.get('/Bar/:bid', barController.getBarByName)
 
 // route pour trouver un bar par capacité
-router.get('/Capacity/:bid', barController.getBarByCapacityId)
+router.get('/Capacity/:bid', barController.getBarByCapacity)
+
+
 
 // créer un bar
 
